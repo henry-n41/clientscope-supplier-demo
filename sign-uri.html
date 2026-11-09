@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ClientScope — Pin Agent Card (setAgentURI)</title>
+  <style>
+    :root { font-family: Inter, system-ui, sans-serif; color: #1c2438; }
+    body { max-width: 640px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+    h1 { font-size: 1.35rem; margin-bottom: .25rem; }
+    .sub { color: #6b7888; margin-bottom: 1.5rem; }
+    .card { background: #f5f8fc; border: 1px solid #e0e6f0; border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; }
+    .row { display: flex; gap: .5rem; flex-wrap: wrap; margin: .35rem 0; }
+    .k { color: #6b7888; min-width: 7rem; }
+    .v { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85rem; word-break: break-all; }
+    button { background: #2667ff; color: #fff; border: 0; border-radius: 10px; padding: .75rem 1.1rem; font-weight: 600; cursor: pointer; font-size: 1rem; }
+    button:disabled { opacity: .55; cursor: not-allowed; }
+    button.secondary { background: #fff; color: #2667ff; border: 1px solid #2667ff; }
+    .status { margin-top: 1rem; padding: .85rem 1rem; border-radius: 10px; display: none; }
+    .status.info { display: block; background: #eef4ff; border: 1px solid #c7d7ff; }
+    .status.ok { display: block; background: #ecfdf3; border: 1px solid #abefc6; }
+    .status.err { display: block; background: #fef3f2; border: 1px solid #fecdca; }
+    ol { padding-left: 1.2rem; }
+    a { color: #2667ff; }
+  </style>
+</head>
+<body>
+  <h1>Pin ClientScope Agent Card on-chain</h1>
+  <p class="sub">One-time Concordium testnet transaction for Agent #1010. Opens your Browser Wallet to approve <code>CIS-8004.setAgentURI</code>.</p>
+
+  <div class="card">
+    <div class="row"><span class="k">Network</span><span class="v">Concordium Testnet</span></div>
+    <div class="row"><span class="k">Agent</span><span class="v">#1010 · JyP9YTHUc6YFEXRdx9HKH</span></div>
+    <div class="row"><span class="k">Owner</span><span class="v" id="owner">3qYSik7b8w9NsgeAk91Mrpapq9T5S7EGvmsa3Ecf4449xiJ8cX</span></div>
+    <div class="row"><span class="k">Metadata URL</span><span class="v" id="uri">https://henry-n41.github.io/clientscope-supplier-demo/agent-card.json</span></div>
+    <div class="row"><span class="k">Hash</span><span class="v" id="hash">669f564f1c65cf53db28ab87a3b44a11eca0dbc521cc2166739581daf9c7b286</span></div>
+    <div class="row"><span class="k">Contract</span><span class="v">CIS-8004 @ 12802,0</span></div>
+  </div>
+
+  <ol>
+    <li>In Chrome, unlock the <strong>Concordium Browser Wallet</strong> and select account <code>3qYS…J8cX</code>.</li>
+    <li>Switch the wallet network to <strong>Testnet</strong>.</li>
+    <li>Click the button below and approve the prompt.</li>
+  </ol>
+
+  <p style="margin:1rem 0">
+    <button id="btn" type="button">Connect wallet &amp; pin card</button>
+  </p>
+
+  <div id="status" class="status"></div>
+
+  <p class="sub" style="margin-top:2rem">After it confirms, we verify with Concordium’s <code>verify_agent_card</code> / badge-check. No private keys leave your wallet.</p>
+
+  <script src="https://cdn.jsdelivr.net/npm/@concordium/web-sdk@9.2.0/lib/min/concordium.web.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@concordium/browser-wallet-api-helpers@3.3.0/lib/concordiumHelpers.min.js"></script>
+  <script>
+
+  const EXPECTED_OWNER = "3qYSik7b8w9NsgeAk91Mrpapq9T5S7EGvmsa3Ecf4449xiJ8cX";
+  const AGENT_URI = "https://henry-n41.github.io/clientscope-supplier-demo/agent-card.json";
+  const METADATA_HASH_HEX = "669f564f1c65cf53db28ab87a3b44a11eca0dbc521cc2166739581daf9c7b286";
+  const TOKEN_ID_HEX = "f203000000000000"; // CIS-2 TokenIdU64 LE for 1010
+  const CONTRACT_INDEX = 12802n;
+  const CONTRACT_SUBINDEX = 0n;
+  const ENERGY = 30000n;
+  const TESTNET_GENESIS = "4221332d34e1694168c2a0c0b3fd0f273809612cb13d000d5c2e00e85f50f796";
+  const SCHEMA_B64 = '//8DAQAAAAgAAABDSVMtODAwNAEAFAAEAAAABQAAAGFkbWluCw0AAABjaXM4X2NvbnRyYWN0DA4AAABjaXMxMF9jb250cmFjdAwMAAAAZ2VuZXNpc19oYXNoEyAAAAACFQAAABgAAABhZ2VudEJ5RXh0ZXJuYWxSZWZlcmVuY2UCFAACAAAAEAAAAGNvbnRyYWN0X2FkZHJlc3MMBAAAAGtpbmQVAgAAAAQAAABDaXM4AQEAAAAUAAMAAAAJAAAAbmFtZXNwYWNlFgIIAAAAa2V5X3R5cGUWAgoAAABwdWJsaWNfa2V5EAICBQAAAENpczEwAQEAAAAUAAMAAAAJAAAAbmFtZXNwYWNlFgIPAAAAaWRlbnRpZmllcl90eXBlFgIKAAAAaWRlbnRpZmllchACAhUCAAAABAAAAE5vbmUCBAAAAFNvbWUBAQAAABQACwAAAAgAAAB0b2tlbl9pZB0ADQAAAG93bmVyX2FjY291bnQLCQAAAGFnZW50X3VyaRUCAAAABAAAAE5vbmUCBAAAAFNvbWUBAQAAABYCDQAAAG1ldGFkYXRhX2hhc2gVAgAAAAQAAABOb25lAgQAAABTb21lAQEAAAATIAAAAAISAAAAZXh0ZXJuYWxfcmVmZXJlbmNlFQIAAAAEAAAATm9uZQIEAAAAU29tZQEBAAAAFAACAAAAEAAAAGNvbnRyYWN0X2FkZHJlc3MMBAAAAGtpbmQVAgAAAAQAAABDaXM4AQEAAAAUAAMAAAAJAAAAbmFtZXNwYWNlFgIIAAAAa2V5X3R5cGUWAgoAAABwdWJsaWNfa2V5EAICBQAAAENpczEwAQEAAAAUAAMAAAAJAAAAbmFtZXNwYWNlFgIPAAAAaWRlbnRpZmllcl90eXBlFgIKAAAAaWRlbnRpZmllchACAgwAAABhZ2VudF93YWxsZXQVAgAAAAQAAABOb25lAgQAAABTb21lAQEAAAALBgAAAHN0YXR1cxUCAAAABgAAAEFjdGl2ZQIHAAAAUmV2b2tlZAINAAAAcmVnaXN0ZXJlZF9hdA0KAAAAcmV2b2tlZF9hdBUCAAAABAAAAE5vbmUCBAAAAFNvbWUBAQAAAA0RAAAAcmV2b2NhdGlvbl9yZWFzb24VAgAAAAQAAABOb25lAgQAAABTb21lAQEAAAAWAhEAAABvbl9jaGFpbl9tZXRh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';
+
+  const statusEl = document.getElementById("status");
+  const btn = document.getElementById("btn");
+
+  function setStatus(kind, html) {
+    statusEl.className = "status " + kind;
+    statusEl.innerHTML = html;
+  }
+
+  function hashToBytes(hex) {
+    const h = hex.trim().replace(/^0x/i, "").toLowerCase();
+    if (!/^[0-9a-f]{64}$/.test(h)) throw new Error("Hash must be 64 hex characters (no 0x).");
+    const out = [];
+    for (let i = 0; i < 64; i += 2) out.push(parseInt(h.slice(i, i + 2), 16));
+    return out;
+  }
+
+  function buildParams() {
+    // Schema-enum shape used by Concordium MCP build_set_agent_uri / registry dashboard
+    return {
+      token_id: TOKEN_ID_HEX,
+      agent_uri: { Some: [AGENT_URI] },
+      metadata_hash: { Some: [hashToBytes(METADATA_HASH_HEX)] },
+    };
+  }
+
+  // Dry-run helper exposed for console testing without a wallet
+  window.__clientscopeBuildUpdate = function () {
+    const sdk = window.concordiumSDK;
+    if (!sdk) throw new Error("concordiumSDK not loaded");
+    const params = buildParams();
+    const schemaBuf = Uint8Array.from(atob(SCHEMA_B64), (c) => c.charCodeAt(0));
+    const serialized = sdk.serializeUpdateContractParameters(
+      sdk.ContractName.fromString("CIS-8004"),
+      sdk.EntrypointName.fromString("setAgentURI"),
+      params,
+      schemaBuf
+    );
+    const hex = sdk.Parameter.toHexString(serialized);
+    const payload = {
+      amount: sdk.CcdAmount.fromMicroCcd(0n),
+      address: sdk.ContractAddress.create(CONTRACT_INDEX, CONTRACT_SUBINDEX),
+      receiveName: sdk.ReceiveName.fromString("CIS-8004.setAgentURI"),
+      maxContractExecutionEnergy: sdk.Energy.create(ENERGY),
+    };
+    return { params, payload, parameter_hex: hex, schemaBase64: SCHEMA_B64 };
+  };
+
+  async function connectAccount(provider) {
+    let account =
+      (typeof provider.getMostRecentlySelectedAccount === "function" &&
+        (await provider.getMostRecentlySelectedAccount())) ||
+      "";
+    if (!account && typeof provider.connect === "function") {
+      account = await provider.connect();
+    }
+    if (!account && typeof provider.requestAccounts === "function") {
+      const accounts = await provider.requestAccounts();
+      account = Array.isArray(accounts) ? accounts[0] : "";
+    }
+    if (!account) throw new Error("No account selected. Unlock the wallet and pick your owner account.");
+    return account;
+  }
+
+  btn.addEventListener("click", async () => {
+    btn.disabled = true;
+    try {
+      setStatus("info", "Looking for Concordium Browser Wallet…");
+      if (!window.concordiumHelpers || !window.concordiumSDK) {
+        throw new Error("Wallet helper or Concordium SDK failed to load from CDN. Check your network and refresh.");
+      }
+      const { detectConcordiumProvider, SchemaType } = window.concordiumHelpers;
+      const sdk = window.concordiumSDK;
+
+      const provider = await detectConcordiumProvider(8000);
+      setStatus("info", "Connecting to wallet… approve the connection if prompted.");
+      const account = await connectAccount(provider);
+
+      if (account !== EXPECTED_OWNER) {
+        throw new Error(
+          "Wrong account connected: " +
+            account +
+            ". Switch the wallet to " +
+            EXPECTED_OWNER +
+            " and try again."
+        );
+      }
+
+      if (typeof provider.getSelectedChain === "function") {
+        const chain = await provider.getSelectedChain();
+        if (chain && chain.toLowerCase() !== TESTNET_GENESIS.toLowerCase()) {
+          throw new Error(
+            "Wallet is not on Concordium Testnet. Open the extension, switch network to Testnet, then try again. (got genesis " +
+              chain +
+              ")"
+          );
+        }
+      }
+
+      const built = window.__clientscopeBuildUpdate();
+      const expectedHex =
+        "08f203000000000000014500000068747470733a2f2f68656e72792d6e34312e6769746875622e696f2f636c69656e7473636f70652d737570706c6965722d64656d6f2f6167656e742d636172642e6a736f6e01669f564f1c65cf53db28ab87a3b44a11eca0dbc521cc2166739581daf9c7b286";
+      if (built.parameter_hex !== expectedHex) {
+        throw new Error("Local parameter encoding mismatch — aborting before wallet prompt.");
+      }
+
+      setStatus(
+        "info",
+        "Approve <code>CIS-8004.setAgentURI</code> in the wallet popup. Sender: <code>" +
+          account.slice(0, 8) +
+          "…</code>"
+      );
+
+      const txHash = await provider.sendTransaction(
+        account,
+        sdk.AccountTransactionType.Update,
+        built.payload,
+        built.params,
+        { type: SchemaType.Module, value: SCHEMA_B64 }
+      );
+
+      setStatus(
+        "ok",
+        "<strong>Submitted.</strong> Transaction hash:<br><code>" +
+          txHash +
+          "</code><br><br>Wait ~20–60s for finalization, then tell me <em>done</em>. I’ll run verify_agent_card / badge-check.<br>" +
+          '<a href="https://testnet.ccdscan.io/?dcount=1&dentity=transaction&dhash=' +
+          encodeURIComponent(txHash) +
+          '" target="_blank" rel="noreferrer">Open on CCDScan testnet</a>'
+      );
+    } catch (err) {
+      const msg = err && err.message ? err.message : String(err);
+      setStatus("err", "<strong>Couldn’t pin yet.</strong> " + msg);
+      btn.disabled = false;
+    }
+  });
+  </script>
+</body>
+</html>
