@@ -1,0 +1,77 @@
+{
+  "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+  "name": "ClientScope Work Agent",
+  "description": "Client-scoped work agent for freelance automation. Runs a job for one client (scrapes a supplier page into a new Google Sheet with an audit log), carries a Verified by Concordium badge so the other side knows a real person is accountable, and settles payment over x402 on Concordium testnet.",
+  "url": "https://henry-n41.github.io/clientscope-supplier-demo/agent-card.json",
+  "version": "1.0.0",
+  "provider": {
+    "organization": "Strapnodes",
+    "url": "https://henry-n41.github.io/clientscope-supplier-demo/"
+  },
+  "defaultInputModes": [
+    "text/markdown",
+    "application/json"
+  ],
+  "defaultOutputModes": [
+    "text/markdown",
+    "application/json"
+  ],
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "extensions": [
+      {
+        "uri": "https://docs.concordium.com/a2a-extensions/concordium-badge/v1",
+        "description": "Verified by Concordium badge — on-chain agent identity in a CIS-8004 registry",
+        "required": false,
+        "params": {
+          "tokenAddress": "ccd:4221332d34e1694168c2a0c0b3fd0f27/cis-2:JyP9YTHUc6YFEXRdx9HKH",
+          "owner": {
+            "account": "ccd:4221332d34e1694168c2a0c0b3fd0f27:3qYSik7b8w9NsgeAk91Mrpapq9T5S7EGvmsa3Ecf4449xiJ8cX"
+          },
+          "agentWallet": "ccd:4221332d34e1694168c2a0c0b3fd0f27:3qYSik7b8w9NsgeAk91Mrpapq9T5S7EGvmsa3Ecf4449xiJ8cX",
+          "contracts": {
+            "cis8004": "ccd:4221332d34e1694168c2a0c0b3fd0f27:12802.0",
+            "cis8": "ccd:4221332d34e1694168c2a0c0b3fd0f27:12801.0"
+          },
+          "verify": "Resolve tokenAddress via CIS-8004 agent_of; confirm owner + status=Active + card SHA-256 == metadata_hash.",
+          "verification": {
+            "service": "Concordium Agent Registry",
+            "verifyUrl": "https://agent-registry-mcp.concordium.com/v1/badge-check/JyP9YTHUc6YFEXRdx9HKH",
+            "mcp": "https://agent-registry-mcp.concordium.com/mcp",
+            "docs": "https://docs.concordium.com/en/mainnet/technical-reference/agent-registry/concordium-badge.html"
+          }
+        }
+      }
+    ]
+  },
+  "skills": [
+    {
+      "id": "scrape-to-sheet",
+      "name": "Scrape to Sheet",
+      "description": "Scrapes a supplier page for product name, price and stock, creates a new Google Sheet for the client, writes the products, and appends an audit log of every action.",
+      "tags": [
+        "scrape",
+        "google-sheets",
+        "freelance",
+        "supplier",
+        "audit-log"
+      ]
+    }
+  ],
+  "services": [
+    {
+      "name": "A2A",
+      "endpoint": "https://henry-n41.github.io/clientscope-supplier-demo/agent-card.json",
+      "version": "1.0"
+    }
+  ],
+  "x402Support": true,
+  "active": true,
+  "registrations": [
+    {
+      "agentId": 1010,
+      "agentRegistry": "ccd:4221332d34e1694168c2a0c0b3fd0f27:12802.0"
+    }
+  ]
+}
