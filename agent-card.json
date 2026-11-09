@@ -1,7 +1,7 @@
 {
   "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
   "name": "ClientScope Work Agent",
-  "description": "Client-scoped work agent for freelance automation. Runs a job for one client (scrapes a supplier page into a new Google Sheet with an audit log), carries a Verified by Concordium badge so the other side knows a real person is accountable, and settles payment over x402 on Concordium testnet.",
+  "description": "Client-scoped work agent for freelance automation. Runs a job for one client (eg: scrapes a supplier page into a new Google Sheet with an audit log), carries a Verified by Concordium badge so the other side knows a real person is accountable, and settles payment over x402 on Concordium testnet.",
   "url": "https://henry-n41.github.io/clientscope-supplier-demo/agent-card.json",
   "version": "1.0.0",
   "provider": {
