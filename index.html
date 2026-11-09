@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Northgate Supplies - Trade Price List (Demo)</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;margin:40px;color:#222;background:#f7f7f5}
+h1{color:#1f5130}
+.note{color:#666;font-size:14px}
+table{border-collapse:collapse;width:100%;max-width:800px;background:#fff}
+th,td{border:1px solid #ccc;padding:10px;text-align:left}
+th{background:#1f5130;color:#fff}
+</style>
+</head>
+<body>
+<h1>Northgate Supplies</h1>
+<p class="note">Trade price list. Demo data for the ClientScope Work Agent hackathon project. Not a real supplier.</p>
+<p class="note">Last updated: <span id="updated">2026-11-09</span></p>
+<table id="products">
+<thead>
+<tr><th>SKU</th><th>Product</th><th>Price (GBP)</th><th>Stock</th></tr>
+</thead>
+<tbody>
+<tr class="product" data-sku="NG-1001"><td class="sku">NG-1001</td><td class="name">Oak Shelf Bracket (pack of 4)</td><td class="price">12.50</td><td class="stock">In stock</td></tr>
+<tr class="product" data-sku="NG-1002"><td class="sku">NG-1002</td><td class="name">Brass Cabinet Handle</td><td class="price">4.75</td><td class="stock">In stock</td></tr>
+<tr class="product" data-sku="NG-1003"><td class="sku">NG-1003</td><td class="name">Stainless Wood Screws 40mm (box of 200)</td><td class="price">8.99</td><td class="stock">Low stock</td></tr>
+<tr class="product" data-sku="NG-1004"><td class="sku">NG-1004</td><td class="name">Matte Black Hinge (pair)</td><td class="price">6.20</td><td class="stock">Out of stock</td></tr>
+<tr class="product" data-sku="NG-1005"><td class="sku">NG-1005</td><td class="name">Wall Plug Assortment (300 pcs)</td><td class="price">9.40</td><td class="stock">In stock</td></tr>
+</tbody>
+</table>
+</body>
+</html>
