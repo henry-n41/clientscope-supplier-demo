@@ -33,7 +33,7 @@
     <div class="row"><span class="k">Agent</span><span class="v">#1010 · JyP9YTHUc6YFEXRdx9HKH</span></div>
     <div class="row"><span class="k">Owner</span><span class="v" id="owner">3qYSik7b8w9NsgeAk91Mrpapq9T5S7EGvmsa3Ecf4449xiJ8cX</span></div>
     <div class="row"><span class="k">Metadata URL</span><span class="v" id="uri">https://henry-n41.github.io/clientscope-supplier-demo/agent-card.json</span></div>
-    <div class="row"><span class="k">Hash</span><span class="v" id="hash">669f564f1c65cf53db28ab87a3b44a11eca0dbc521cc2166739581daf9c7b286</span></div>
+    <div class="row"><span class="k">Hash</span><span class="v" id="hash">fb3fb839cc10db8ad6b53bf90c3c04cbf11bc6cda7c27e5790a161492be0a9e8</span></div>
     <div class="row"><span class="k">Contract</span><span class="v">CIS-8004 @ 12802,0</span></div>
   </div>
 
@@ -57,7 +57,7 @@
 
   const EXPECTED_OWNER = "3qYSik7b8w9NsgeAk91Mrpapq9T5S7EGvmsa3Ecf4449xiJ8cX";
   const AGENT_URI = "https://henry-n41.github.io/clientscope-supplier-demo/agent-card.json";
-  const METADATA_HASH_HEX = "669f564f1c65cf53db28ab87a3b44a11eca0dbc521cc2166739581daf9c7b286";
+  const METADATA_HASH_HEX = "fb3fb839cc10db8ad6b53bf90c3c04cbf11bc6cda7c27e5790a161492be0a9e8";
   const TOKEN_ID_HEX = "f203000000000000"; // CIS-2 TokenIdU64 LE for 1010
   const CONTRACT_INDEX = 12802n;
   const CONTRACT_SUBINDEX = 0n;
@@ -165,7 +165,7 @@
 
       const built = window.__clientscopeBuildUpdate();
       const expectedHex =
-        "08f203000000000000014500000068747470733a2f2f68656e72792d6e34312e6769746875622e696f2f636c69656e7473636f70652d737570706c6965722d64656d6f2f6167656e742d636172642e6a736f6e01669f564f1c65cf53db28ab87a3b44a11eca0dbc521cc2166739581daf9c7b286";
+        "08f203000000000000014500000068747470733a2f2f68656e72792d6e34312e6769746875622e696f2f636c69656e7473636f70652d737570706c6965722d64656d6f2f6167656e742d636172642e6a736f6e01fb3fb839cc10db8ad6b53bf90c3c04cbf11bc6cda7c27e5790a161492be0a9e8";
       if (built.parameter_hex !== expectedHex) {
         throw new Error("Local parameter encoding mismatch — aborting before wallet prompt.");
       }
