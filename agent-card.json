@@ -1,7 +1,7 @@
 {
   "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
   "name": "ClientScope Work Agent",
-  "description": "Client-scoped work agent for freelance automation. Runs a job for one client (eg: scrapes a supplier page into a new Google Sheet with an audit log), carries a Verified by Concordium badge so the other side knows a real person is accountable, and settles payment over x402 on Concordium testnet.",
+  "description": "A general AI work agent that a business hires for one job at a time. Each job runs only for the client who hired it, every action is recorded in an audit trail the client can check, and its identity is verified on Concordium with a Verified by Concordium badge, so the client knows a real, accountable person stands behind it. Payment is settled over x402 on Concordium testnet. The first available job reads a supplier's web page for product names, prices and stock, and writes them into a new Google Sheet for the client. More jobs are planned.",
   "url": "https://henry-n41.github.io/clientscope-supplier-demo/agent-card.json",
   "version": "1.0.0",
   "provider": {
