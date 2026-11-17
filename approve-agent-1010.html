@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ClientScope: approve the agent #1010 update</title>
+<style>
+ :root{font-family:Inter,system-ui,sans-serif;color:#1c2438} body{max-width:680px;margin:2rem auto;padding:0 1rem;line-height:1.5}
+ h1{font-size:1.35rem;margin-bottom:.2rem} .sub{color:#6b7888} .card{background:#f5f8fc;border:1px solid #e0e6f0;border-radius:12px;padding:1rem 1.1rem;margin:1rem 0}
+ .row{display:flex;gap:.5rem;flex-wrap:wrap;margin:.3rem 0} .k{color:#6b7888;min-width:8rem} .v{font-family:ui-monospace,Menlo,monospace;font-size:.83rem;word-break:break-all;flex:1}
+ button{background:#2667ff;color:#fff;border:0;border-radius:10px;padding:.75rem 1.1rem;font-weight:600;cursor:pointer;font-size:1rem;margin:.3rem 0}
+ button:disabled{opacity:.5;cursor:not-allowed} .status{margin-top:1rem;padding:.85rem 1rem;border-radius:10px;display:none}
+ .info{display:block;background:#eef4ff;border:1px solid #c7d7ff}.ok{display:block;background:#ecfdf3;border:1px solid #abefc6}.err{display:block;background:#fef3f2;border:1px solid #fecdca}
+ a{color:#2667ff} ol{padding-left:1.2rem}
+</style>
+</head>
+<body>
+<h1>Approve the ClientScope agent update</h1>
+<p class="sub">Two Concordium testnet approvals for agent #1010, sent from the owner account. Roughly 20 to 30 testnet CCD in fees in total.</p>
+<div class="card">
+ <div class="row"><span class="k">Owner account</span><span class="v">3qYSik7b8w9NsgeAk91Mrpapq9T5S7EGvmsa3Ecf4449xiJ8cX</span></div>
+ <div class="row"><span class="k">Approval 1</span><span class="v">updateOperator: approves ClientScope's operating account 3N9s8YUN…Ye6fn on the Agent Registry, so ClientScope can prove it is agent #1010 by signing each buyer's fresh nonce. Your owner key never leaves your wallet. You can remove this approval at any time.</span></div>
+ <div class="row"><span class="k">Approval 2</span><span class="v">setAgentURI: pins the fixed Agent Card ("Strapnode") and its new SHA-256 on chain.</span></div>
+</div>
+<ol>
+ <li>In Chrome, unlock the Concordium Browser Wallet, switch the network to Testnet, and select account 3qYS…J8cX.</li>
+ <li>Click the three buttons below in order, and approve each wallet popup.</li>
+</ol>
+<button id="b0">1. Connect wallet</button><br>
+<button id="b1" disabled>2. Approve ClientScope's operating key</button><br>
+<button id="b2" disabled>3. Approve the fixed Agent Card</button>
+<div id="status" class="status"></div>
+<script src="https://cdn.jsdelivr.net/npm/@concordium/web-sdk@9.2.0/lib/min/concordium.web.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@concordium/browser-wallet-api-helpers@3.3.0/lib/concordiumHelpers.min.js"></script>
+<script>
+const OWNER = "3qYSik7b8w9NsgeAk91Mrpapq9T5S7EGvmsa3Ecf4449xiJ8cX";
+const TESTNET_GENESIS = "4221332d34e1694168c2a0c0b3fd0f273809612cb13d000d5c2e00e85f50f796";
+const SCHEMA_B64 = "//8DAQAAAAgAAABDSVMtODAwNAEAFAAEAAAABQAAAGFkbWluCw0AAABjaXM4X2NvbnRyYWN0DA4AAABjaXMxMF9jb250cmFjdAwMAAAAZ2VuZXNpc19oYXNoEyAAAAACFQAAABgAAABhZ2VudEJ5RXh0ZXJuYWxSZWZlcmVuY2UCFAACAAAAEAAAAGNvbnRyYWN0X2FkZHJlc3MMBAAAAGtpbmQVAgAAAAQAAABDaXM4AQEAAAAUAAMAAAAJAAAAbmFtZXNwYWNlFgIIAAAAa2V5X3R5cGUWAgoAAABwdWJsaWNfa2V5EAICBQAAAENpczEwAQEAAAAUAAMAAAAJAAAAbmFtZXNwYWNlFgIPAAAAaWRlbnRpZmllcl90eXBlFgIKAAAAaWRlbnRpZmllchACAhUCAAAABAAAAE5vbmUCBAAAAFNvbWUBAQAAABQACwAAAAgAAAB0b2tlbl9pZB0ADQAAAG93bmVyX2FjY291bnQLCQAAAGFnZW50X3VyaRUCAAAABAAAAE5vbmUCBAAAAFNvbWUBAQAAABYCDQAAAG1ldGFkYXRhX2hhc2gVAgAAAAQAAABOb25lAgQAAABTb21lAQEAAAATIAAAAAISAAAAZXh0ZXJuYWxfcmVmZXJlbmNlFQIAAAAEAAAATm9uZQIEAAAAU29tZQEBAAAAFAACAAAAEAAAAGNvbnRyYWN0X2FkZHJlc3MMBAAAAGtpbmQVAgAAAAQAAABDaXM4AQEAAAAUAAMAAAAJAAAAbmFtZXNwYWNlFgIIAAAAa2V5X3R5cGUWAgoAAABwdWJsaWNfa2V5EAICBQAAAENpczEwAQEAAAAUAAMAAAAJAAAAbmFtZXNwYWNlFgIPAAAAaWRlbnRpZmllcl90eXBlFgIKAAAAaWRlbnRpZmllchACAgwAAABhZ2VudF93YWxsZXQVAgAAAAQAAABOb25lAgQAAABTb21lAQEAAAALBgAAAHN0YXR1cxUCAAAABgAAAEFjdGl2ZQIHAAAAUmV2b2tlZAINAAAAcmVnaXN0ZXJlZF9hdA0KAAAAcmV2b2tlZF9hdBUCAAAABAAAAE5vbmUCBAAAAFNvbWUBAQAAAA0RAAAAcmV2b2NhdGlvbl9yZWFzb24VAgAAAAQAAABOb25lAgQAAABTb21lAQEAAAAWAhEAAABvbl9jaGFpbl9tZXRh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";
+const OPERATOR = {"receive_name": "CIS-8004.updateOperator", "parameter_json": [{"update": {"Add": []}, "operator": {"Account": ["3N9s8YUN2pxMuP5bszXUUk9vZ3ks7tDgxgzhG5arGr5qGYe6fn"]}}], "parameter_hex": "01000100376c1ae7a9f159e28efc2933df252557526b5b4cf89cf2637c83e96472713291", "suggested_energy": 30000};
+const SET_URI = {"receive_name": "CIS-8004.setAgentURI", "parameter_json": {"token_id": "f203000000000000", "agent_uri": {"Some": ["https://raw.githubusercontent.com/henry-n41/clientscope/agent-cards/agent-card.json"]}, "metadata_hash": {"Some": [[217, 131, 33, 16, 26, 140, 140, 125, 158, 222, 18, 244, 173, 107, 158, 18, 253, 145, 187, 121, 45, 166, 226, 169, 143, 210, 83, 57, 76, 42, 12, 179]]}}, "parameter_hex": "08f203000000000000015300000068747470733a2f2f7261772e67697468756275736572636f6e74656e742e636f6d2f68656e72792d6e34312f636c69656e7473636f70652f6167656e742d63617264732f6167656e742d636172642e6a736f6e01d98321101a8c8c7d9ede12f4ad6b9e12fd91bb792da6e2a98fd253394c2a0cb3", "suggested_energy": 30000};
+let provider, account;
+const st = document.getElementById("status");
+const say = (k, h) => { st.className = "status " + k; st.innerHTML = h; };
+const explorer = (h) => '<a href="https://ccdexplorer.io/testnet/transaction/' + h + '" target="_blank" rel="noreferrer">' + h.slice(0, 16) + '…</a>';
+function serialize(entry, params) {
+  const sdk = window.concordiumSDK;
+  const buf = Uint8Array.from(atob(SCHEMA_B64), (c) => c.charCodeAt(0));
+  return sdk.Parameter.toHexString(sdk.serializeUpdateContractParameters(sdk.ContractName.fromString("CIS-8004"), sdk.EntrypointName.fromString(entry), params, buf));
+}
+async function send(plan) {
+  const sdk = window.concordiumSDK; const { SchemaType } = window.concordiumHelpers;
+  const entry = plan.receive_name.split(".")[1];
+  if (serialize(entry, plan.parameter_json) !== plan.parameter_hex) throw new Error("Local encoding check failed, so nothing was sent.");
+  const payload = { amount: sdk.CcdAmount.fromMicroCcd(0n), address: sdk.ContractAddress.create(12802n, 0n),
+    receiveName: sdk.ReceiveName.fromString(plan.receive_name), maxContractExecutionEnergy: sdk.Energy.create(BigInt(plan.suggested_energy || 30000)) };
+  return provider.sendTransaction(account, sdk.AccountTransactionType.Update, payload, plan.parameter_json, { type: SchemaType.Module, value: SCHEMA_B64 });
+}
+document.getElementById("b0").onclick = async () => {
+  try {
+    if (!window.concordiumHelpers || !window.concordiumSDK) throw new Error("The Concordium scripts did not load. Check your connection and refresh.");
+    say("info", "Looking for the Concordium Browser Wallet…");
+    provider = await window.concordiumHelpers.detectConcordiumProvider(8000);
+    account = (provider.getMostRecentlySelectedAccount && await provider.getMostRecentlySelectedAccount()) || await provider.connect();
+    if (account !== OWNER) throw new Error("Wrong account selected: " + account + ". Select 3qYS…J8cX in the wallet and click again.");
+    const chain = provider.getSelectedChain ? await provider.getSelectedChain() : null;
+    if (chain && chain.toLowerCase() !== TESTNET_GENESIS) throw new Error("The wallet is not on Testnet. Switch the network to Testnet and click again.");
+    say("ok", "Connected as the owner account on Testnet. Now click button 2.");
+    document.getElementById("b1").disabled = false;
+  } catch (e) { say("err", e.message || String(e)); }
+};
+document.getElementById("b1").onclick = async () => {
+  const b = document.getElementById("b1"); b.disabled = true;
+  try { say("info", "Approve <b>CIS-8004.updateOperator</b> in the wallet popup.");
+    const tx = await send(OPERATOR); say("ok", "Approval 1 sent: " + explorer(tx) + ". Now click button 3.");
+    document.getElementById("b2").disabled = false;
+  } catch (e) { say("err", e.message || String(e)); b.disabled = false; }
+};
+document.getElementById("b2").onclick = async () => {
+  const b = document.getElementById("b2"); b.disabled = true;
+  try { say("info", "Approve <b>CIS-8004.setAgentURI</b> in the wallet popup.");
+    const tx = await send(SET_URI); say("ok", "Both approvals sent. Approval 2: " + explorer(tx) + ". You can close this page now.");
+  } catch (e) { say("err", e.message || String(e)); b.disabled = false; }
+};
+</script>
+</body>
+</html>
