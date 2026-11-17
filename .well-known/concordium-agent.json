@@ -1,0 +1,20 @@
+{
+  "type": "ConcordiumDomainProof",
+  "version": 1,
+  "site": "https://henry-n41.github.io/clientscope-supplier-demo/",
+  "network": "ccd:4221332d34e1694168c2a0c0b3fd0f27",
+  "registry": "CIS-8004 12802,0",
+  "agent": {
+    "token_id": "1211",
+    "token_address": "JyP9XR6EkrzHnx9g177u9"
+  },
+  "account": "4j6RhVCWEG3GDQcwcgSQRxu7nmXSC4V834YrsVtudomCG6ueMH",
+  "issued": "2026-11-17T09:55:05.857Z",
+  "message": "Concordium domain proof v1\nsite: https://henry-n41.github.io/clientscope-supplier-demo/\nnetwork: ccd:4221332d34e1694168c2a0c0b3fd0f27\nregistry: CIS-8004 12802,0\nagent: #1211 JyP9XR6EkrzHnx9g177u9\naccount: 4j6RhVCWEG3GDQcwcgSQRxu7nmXSC4V834YrsVtudomCG6ueMH\nissued: 2026-11-17T09:55:05.857Z",
+  "signature": {
+    "0": {
+      "0": "2ab50d19f7600648d4c0fe54e454bb2efe44593d41a34f54cee8152e15460a7f1b68b6b54cdbba143f1f2a403d127a496066aa88b7a57003ac5d60de2f267301"
+    }
+  },
+  "how_to_verify": "Rebuild `message` from the fields, verify `signature` against the account's on-chain keys (Concordium signMessage), then check the CIS-8004 agent is owned by that account, Active, and that its on-chain card names this site as provider.url."
+}
